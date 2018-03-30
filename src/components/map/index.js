@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { View, Image } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import AddUsersModal from '../modal';
 
 class Map extends Component {
   static propTypes = {
+    error: PropTypes.string.isRequired,
     openModal: PropTypes.func.isRequired,
     initialRegion: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
@@ -45,14 +46,24 @@ class Map extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        {!!this.props.error &&
+          Alert.alert(
+            'Erro',
+            'Usuário não encontrado',
+            [
+              { text: 'OK' },
+            ],
+            { cancelable: false },
+          )
+        }
+
         <MapView
           initialRegion={this.props.initialRegion}
           onLongPress={e => this.openModal(e)}
           style={styles.map}
         >
 
-          { this.props.users.map(user => (
+          { this.props.users.length > 0 && this.props.users.map(user => (
             <Marker
               key={user.id}
               coordinate={user.coordinate}
@@ -78,6 +89,7 @@ class Map extends Component {
 const mapStateToProps = state => ({
   users: state.gitUsers.users,
   initialRegion: state.gitUsers.initialRegion,
+  error: state.gitUsers.error,
 });
 
 const mapDispatchToProps = dispatch =>

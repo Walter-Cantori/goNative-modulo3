@@ -7,6 +7,7 @@ const initialState = {
   },
   users: [],
   visibility: false,
+  error: '',
 };
 
 export default function gitUsers(state = initialState, action) {
