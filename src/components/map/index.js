@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { View, Text, Modal, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import * as GitUsersActions from '../../store/actions/gitUsers';
+import AddUsersModal from '../modal';
 
 
 class Map extends Component {
-  state ={
-    coordinate: {
-      latitude: null,
-      longitude: null,
-      latitudeDelta: 0.0042,
-      longitudeDelta: 0.0031,
-    },
-    modalVisible: false,
-    username: null,
+  static propTypes = {
+    openModal: PropTypes.func.isRequired,
+    initialRegion: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      latitudeDelta: PropTypes.number.isRequired,
+      longitudeDelta: PropTypes.number.isRequired,
+    }).isRequired,
+    users: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      coordinate: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        latitudeDelta: PropTypes.number.isRequired,
+        longitudeDelta: PropTypes.number.isRequired,
+      }),
+      name: PropTypes.string.isRequired,
+      bio: PropTypes.string.isRequired,
+    })).isRequired,
   }
 
   openModal = (e) => {
     let { coordinate: { latitude, longitude } } = e.nativeEvent;
-    this.setState({
-      modalVisible: true,
-      coordinate: { ...this.state.coordinate, latitude, longitude },
+    this.props.openModal({
+      latitude,
+      longitude,
+      latitudeDelta: 0.0042,
+      longitudeDelta: 0.0031,
     });
-  }
-
-  fetchGitUser = async () => {
-    let user = { username, coordinate } = this.state;
-    this.props.addGitUserRequest(user);
-
-    this.setState({ username: null });
-    this.closeModal();
-  }
-
-  closeModal = () => {
-    this.setState({ modalVisible: false });
   }
 
   render() {
@@ -64,40 +66,9 @@ class Map extends Component {
             </Marker>
             ))
           }
-              
         </MapView>
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={this.closeModal}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalBox}>
-              <Text style={styles.modalTitle}>Adicionar Novo Local</Text>
-              <TextInput
-                style={styles.modalInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Usúario no Github"
-                underlineColorAndroid="transparent"
-                value={this.state.username}
-                onChangeText={username => this.setState({ username })}
-              />
-
-              <View style={styles.modalButton}>
-                <TouchableOpacity style={styles.modalCancel} onPress={this.closeModal}>
-                  <Text>Cancelar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalSave} onPress={this.fetchGitUser}>
-                  <Text>Salvar</Text>
-                </TouchableOpacity>
-              </View>
-              
-            </View>
-          </View>
-        </Modal>
+        <AddUsersModal />
 
       </View>
     );

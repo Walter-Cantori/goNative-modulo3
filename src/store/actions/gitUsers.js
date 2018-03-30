@@ -19,13 +19,13 @@ export const addGitUserError = error => ({
   },
 });
 
-export const openModal = coordinates => ({
+export const openModal = coordinate => ({
   type: 'OPEN_MODAL',
   payload: {
-    coordinates,
+    coordinate,
   },
 });
 
 export const closeModal = () => ({
-  type: 'OPEN_MODAL',
+  type: 'CLOSE_MODAL',
 });

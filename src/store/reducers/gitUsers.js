@@ -6,6 +6,7 @@ const initialState = {
     longitudeDelta: 0.0031,
   },
   users: [],
+  visibility: false,
 };
 
 export default function gitUsers(state = initialState, action) {

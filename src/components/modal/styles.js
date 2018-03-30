@@ -1,72 +1,65 @@
 import { StyleSheet } from 'react-native';
+import { colors, metrics } from '../../styles';
 
 const styles = StyleSheet.create({
 
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: colors.transparentBlack,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: metrics.basePadding,
   },
 
   modalBox: {
-    borderRadius: 5,
+    borderRadius: metrics.baseBorderRadius,
     height: 200,
     width: '100%',
-    backgroundColor: 'white',
-    padding: 20,
+    backgroundColor: colors.white,
+    padding: metrics.basePadding,
     alignItems: 'center',
   },
 
   modalTitle: {
-    color: '#333',
+    color: colors.titleBlack,
     fontWeight: 'bold',
     fontSize: 18,
   },
 
   modalInput: {
     marginTop: 20,
-    borderColor: '#DDD',
+    borderColor: colors.borderGrey,
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: metrics.baseBorderRadius,
     width: '100%',
     height: 40,
   },
 
-  modalButton:{ 
+  modalButton: {
     marginTop: 10,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderRadius: 5,
+    borderRadius: metrics.baseBorderRadius,
   },
 
   modalCancel: {
-    borderRadius: 5,
+    borderRadius: metrics.baseBorderRadius,
     height: 42,
-    backgroundColor: '#CCC',
+    backgroundColor: colors.borderGrey,
     width: '48%',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   modalSave: {
-    borderRadius: 5,
+    borderRadius: metrics.baseBorderRadius,
     height: 42,
-    backgroundColor: '#85C47C',
+    backgroundColor: colors.buttonGreen,
     width: '48%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  marker: {
-    width: 50,
-    height: 50,
-    borderColor: "white",
-    borderWidth: 5,
-    borderRadius: 25,
-  }
 
 });
 

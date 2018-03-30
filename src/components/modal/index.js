@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
-import { Modal, View, TouchableOpacity, Text } from 'react-native';
+import { Modal, View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
+import * as GitUserActions from '../../store/actions/gitUsers';
 
 class AddUserModal extends Component {
+  static propTypes = {
+    addGitUserRequest: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    visibility: PropTypes.bool.isRequired,
+  };
+  state = {
+    username: null,
+  };
 
   fetchGitUser = async () => {
-    let user = { username, coordinate } = this.state;
-    this.props.addGitUserRequest(user);
-
+    this.props.addGitUserRequest(this.state.username);
     this.setState({ username: null });
     this.closeModal();
   }
 
   closeModal = () => {
-    this.setState({ modalVisible: false });
+    this.props.closeModal();
   }
 
   render() {
@@ -24,7 +32,7 @@ class AddUserModal extends Component {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={this.state.modalVisible}
+        visible={this.props.visibility}
         onRequestClose={this.closeModal}
       >
         <View style={styles.modalContainer}>
@@ -56,4 +64,12 @@ class AddUserModal extends Component {
   }
 }
 
-export default AddUserModal;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(GitUserActions, dispatch);
+
+const mapStateToProps = state => ({
+  visibility: state.gitUsers.visibility,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddUserModal);
+
